@@ -23,18 +23,18 @@ function toggle(el){
 function renderData(data){
 	var name = data.name.substring(0, data.name.length - 4);
 	var html = "\
-		<div class='row'>\
-                <div class='col-sm-2'>\
-                    <div class='row'>\
-                        <label style='height:50px; width:50px;'>"+name+"</label>\
-                    </div>\
-                    <div class='row'>\
-                        <input type='image' style='width:50px; height:50px' src='img/play.png' class='play' onclick='toggle(this);'/>\
+		<div class='row' style='padding: 20px;margin: 20px;border: 1px solid #F35342;border-radius: 10px;margin-bottom: 40px;'>\
+                <div class='row'>\
+                    <div class='col-sm-2' style='text-align: center;margin-bottom: 10px;'>\
+                        <input type='image' style='outline:none!important;width:50px; height:50px;opacity:0.7;border: 1px solid #F35342;border-width: 2px;border-radius: 15px;' src='img/play.png' class='play' onclick='toggle(this);'/>\
                         <audio onended='toggle(this);' id='player' src='"+data.download_url+"' class='"+name+"'></audio>\
                     </div>\
+                    <div class='col-sm-10'>\
+                        <label style='font-weight: 100;font-size: 50px;margin-top: -11px;text-transform: uppercase;'>"+name+"</label>\
+                    </div>\
                 </div>\
-                <div class='col-sm-10'>\
-                    <canvas id='"+name+"' width='1000px' height='200px'></canvas>\
+                <div class='row'>\
+                    <canvas id='"+name+"' width='1118px' height='200px'></canvas>\
                 </div>\
             </div>";
     return html;

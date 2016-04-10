@@ -167,8 +167,8 @@ a,button{outline: none!important;} /* Prevent ugly blue glow on chrome and safar
 /* Bloc text custom styling */
 
 #header h3{
-	font-size: 32px;
-	font-weight: 900;
+	font-size: 40px;
+	font-weight: 100;
 	font-family: Montserrat;
 }
 #header p{
@@ -528,7 +528,7 @@ a[data-lightbox]:hover img{
 /* Bloc image backgrounds */
 
 .bg-city-overlay{
-	background-image:url("img/city-overlay.png");
+	background-image:url("img/bgpic.jpg");
 }
 
 
