@@ -68,7 +68,7 @@ def generate(FILENAME, dt=None):
     if not dt:
     	gg = read_file()
     else:
-    	gg = convert_to_num(dt)
+    	gg = convert_to_num(dt["data"])
     gg = change_range(gg, min(gg), max(gg), 0, 11)
     n1 = play_list(gg, octave, 1/8)
     midi_path = "midi/"+FILENAME+".mid"
@@ -80,8 +80,9 @@ def generate(FILENAME, dt=None):
     sound2 = sound2 - 10
     output = sound1.overlay(sound2, loop=True)
     output.export(OUTPUT+"/"+FILENAME+".mp3", format="mp3",tags={'artist': 'HackerPack', 'album': 'Stocks', 'comments': FILENAME +' stock data'})
-    res = {"name": FILENAME, "data": dt}
-    open("json/"+FILENAME+".json", "w").write(json.dumps(res))
+    dt["name"] = FILENAME
+    dt["len"] = len(output)
+    open("json/"+FILENAME+".json", "w").write(json.dumps(dt))
     
 
 if __name__ == "__main__":

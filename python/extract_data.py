@@ -17,6 +17,7 @@ def extract_data(code):
 		tr_tags = table.find_all('tr')
 
 	val=[]
+	date = []
 
 	count=0
 	for tr_tag in tr_tags:
@@ -26,7 +27,9 @@ def extract_data(code):
 			for td_tag in td_tags:
 				if count1 == 4:
 					val.append(str(td_tag.string.strip()))
+				if count1 == 0:
+					date.append(str(td_tag.string.strip()))
 				count1=count1+1
 		count=count+1
 
-	return val
+	return {"data": val, "date": date}
