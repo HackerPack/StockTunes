@@ -1,4 +1,10 @@
 .DS_Store/
+.DS_Store
+*.sf2
+intermediate/
+midi/
+soundfont/
+*.dat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
