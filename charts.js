@@ -54,8 +54,14 @@ $(function() {
 				for(var j=0; j<res.data.length; j++){
 					empty.push(null);
 				}
+
+				var tempDate = [];
+				for(var j=0; j<res.date.length; j++){
+					tempDate.push(res.date[j].substring(0, res.date[j].length - 5));
+				}
+
 				var data = {
-			    labels: res.date,
+			    labels: tempDate,
 			    datasets: [
 				        {
 				            label: res.name,
