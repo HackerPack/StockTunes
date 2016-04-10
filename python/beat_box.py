@@ -7,6 +7,7 @@ from pyknon.genmidi import Midi
 from pyknon.music import Note, NoteSeq, Rest
 import midi_convert
 from pydub import AudioSegment
+import json
 
 
 def read_file():
@@ -38,11 +39,13 @@ def play_list(pitch_list, octave_list, duration,
               volume=120):
     result = NoteSeq()
     durl = [1/8, 1/8, 1/16, 1/16]
+    cc = [choice([0,1,2,3,4,5,6,7,8,9,10,11]), choice([0,1,2,3,4,5,6,7,8,9,10,11]), choice([0,1,2,3,4,5,6,7,8,9,10,11]), choice([0,1,2,3,4,5,6,7,8,9,10,11])]
     st = 0
     for pitch in pitch_list:
-        note = pitch
+        note1 = pitch
+        note = cc[st%4]
         #octave = choice_if_list(octave_list)
-        octave = change_range(note, 0, 11, 1, 7)
+        octave = change_range(note1, 0, 11, 1, 7)
         #dur = choice_if_list(duration)
         dur = durl[st%4]
         st += 1
@@ -59,12 +62,13 @@ SF2 = "soundfont/FarfisaGrandPiano_S1.sf2"
 OUTPUT = "output"
 INTER = "intermediate"
 
-def generate(FILENAME, gg=None):
+def generate(FILENAME, dt=None):
     octave = range(5, 7)
-    if not gg:
+    gg = None
+    if not dt:
     	gg = read_file()
     else:
-    	gg = convert_to_num(gg)
+    	gg = convert_to_num(dt)
     gg = change_range(gg, min(gg), max(gg), 0, 11)
     n1 = play_list(gg, octave, 1/8)
     midi_path = "midi/"+FILENAME+".mid"
@@ -76,6 +80,8 @@ def generate(FILENAME, gg=None):
     sound2 = sound2 - 10
     output = sound1.overlay(sound2, loop=True)
     output.export(OUTPUT+"/"+FILENAME+".mp3", format="mp3",tags={'artist': 'HackerPack', 'album': 'Stocks', 'comments': FILENAME +' stock data'})
+    res = {"name": FILENAME, "data": dt}
+    open("json/"+FILENAME+".json", "w").write(json.dumps(res))
     
 
 if __name__ == "__main__":
