@@ -77,7 +77,7 @@ def generate(FILENAME, dt=None):
     sound1 = AudioSegment.from_mp3(INTER+"/"+FILENAME+".wav")
     sound1 = sound1 + 15
     sound2 = AudioSegment.from_mp3("soundfont/beats"+str(choice(range(1,9)))+".mp3")
-    sound2 = sound2 - 10
+    sound2 = sound2 - 5
     output = sound1.overlay(sound2, loop=True)
     output.export(OUTPUT+"/"+FILENAME+".mp3", format="mp3",tags={'artist': 'HackerPack', 'album': 'Stocks', 'comments': FILENAME +' stock data'})
     dt["name"] = FILENAME
