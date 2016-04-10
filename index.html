@@ -19,7 +19,6 @@
     <script src="./js/waveform.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="charts.js"></script>
-    <script src="audio.js"></script>
     <link rel='stylesheet' href='./css/et-line.min.css'/>
     <link rel='stylesheet' href='./css/font-awesome.min.css'/>
     <link href='http://fonts.googleapis.com/css?family=Montserrat&subset=latin,latin-ext' rel='stylesheet'
@@ -78,51 +77,9 @@
     
     <!-- porfolio -->
     <div class="bloc l-bloc bgc-white" id="porfolio">
-        <div class="container bloc-lg">
-            <!--<div class="row">
-                <div class="col-sm-12">
-                    <h2 class="text-center mg-md ">
-                       PLAYLIST
-                    </h2>
-                </div>
-            </div>
-            <div class="row voffset">
+        <div class="container bloc-lg" id="container">
 
-                    <script>
-                        audiojs.events.ready(function() {
-                        var as = audiojs.createAll();
-                        });
-                    </script>
-                    <audio src="mp3/sample.mp3" preload="auto" />
 
-            </div>
-            <div class="row voffset">
-                    <canvas id="myChart" width="1000px" height="100"></canvas>
-            </div>
-            -->
-            <div class="row">
-                <div class="col-sm-2">
-                    <audio id="player" src="https://raw.githubusercontent.com/HackerPack/StockTunes/master/python/output/yhoo.mp3"></audio>
-                    <div class="row">
-
-                        <label style="height:50px; width:50px;">Google</label>
-                    
-                    </div>
-                    <div class="row">
-                        <input type="image" style="width:50px; height:50px" src="img/play.png" class="play" onclick="toggle(this);"/>
-                        
-                    </div>
-    
-                </div>
-                <div class="col-sm-10">
-                    <canvas id="myChart" width="1000px" height="100"></canvas>
-                </div>
-
-            </div>
-
-            <div class="row">
-
-            </div>
         </div>
     </div>
     <!-- porfolio END -->

@@ -1,37 +1,94 @@
+var funcc = {};
+
+function toggle(el){
+	var el = $(el).parent().find("input")[0];
+	var player = $(el).parent().find("audio")[0];
+    if(el.className!="pause")
+    {
+        el.src='img/pause.jpg';
+        el.className="pause";
+        player.play();
+        funcc[player.className]();
+    }
+    else if(el.className=="pause")
+    {
+        el.src='img/play.png';
+        el.className="play";
+        player.pause();
+        
+    }
+    return false;
+}
+
+function renderData(data){
+	var name = data.name.substring(0, data.name.length - 4);
+	var html = "\
+		<div class='row'>\
+                <div class='col-sm-2'>\
+                    <div class='row'>\
+                        <label style='height:50px; width:50px;'>"+name+"</label>\
+                    </div>\
+                    <div class='row'>\
+                        <input type='image' style='width:50px; height:50px' src='img/play.png' class='play' onclick='toggle(this);'/>\
+                        <audio onended='toggle(this);' id='player' src='"+data.download_url+"' class='"+name+"'></audio>\
+                    </div>\
+                </div>\
+                <div class='col-sm-10'>\
+                    <canvas id='"+name+"' width='1000px' height='200px'></canvas>\
+                </div>\
+            </div>";
+    return html;
+}
+
 $(function() {
 
-	var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-	        {
-	            label: "My First dataset",
-	            fillColor: "rgba(220,220,220,0.5)",
-	            strokeColor: "rgba(220,220,220,0.8)",
-	            highlightFill: "rgba(220,220,220,0.75)",
-	            highlightStroke: "rgba(220,220,220,1)",
-	            data: [65, 59, 80, 81, 56, 55, 40]
-	        }
-    	]
-	};
-    var ctx = $("#myChart").get(0).getContext("2d");
-	// This will get the first returned node in the jQuery collection.
-	var myLineChart = new Chart(ctx).Line(data);
-	function fetchList(){
-	    $.get("http://api.github.com/repos/HackerPack/StockTunes/contents/python/output").then(function(res){
-	        console.log(res);
-	        for (var x in res) {
-	        	console.log(res[x].download_url);
-	        }
-	        return res;
-	    })
-
-	}
-	var links=fetchList();
-	var json={links};
-	var ul = $('<ul>').appendTo('body');
-    //var json = { items: ['item 1', 'item 2', 'item 3'] };
-    $(json.links).each(function(index, item) {
-        ul.append($(document.createElement('li')).text(item.download_url));
-    });
+	$.get("http://api.github.com/repos/HackerPack/StockTunes/contents/python/output").then(function(res){
+        for(var i=0; i<res.length; i++){
+        	var html = renderData(res[i]);
+        	$("#container").append(html);
+        	var name = res[i].name.substring(0, res[i].name.length - 4);
+		    $.get("https://raw.githubusercontent.com/HackerPack/StockTunes/master/python/json/"+name+".json").then(function(res){
+		        res = JSON.parse(res);
+				var empty = [];
+				var min = Math.min.apply(null, res.data);
+				for(var j=0; j<res.data.length; j++){
+					empty.push(null);
+				}
+				var data = {
+			    labels: res.date,
+			    datasets: [
+				        {
+				            label: res.name,
+				            fillColor: "rgba(220,220,220,0.5)",
+				            strokeColor: "rgba(220,220,220,0.8)",
+				            highlightFill: "rgba(220,220,220,0.75)",
+				            highlightStroke: "rgba(220,220,220,1)",
+				            data: res.data
+				        },
+				        {
+				            label: res.name,
+				            fillColor: "rgba(0,220,220,0.5)",
+				            strokeColor: "rgba(0,220,220,0.8)",
+				            highlightFill: "rgba(0,220,220,0.75)",
+				            highlightStroke: "rgba(0,220,220,1)",
+				            data: empty
+				        }
+			    	]
+				};
+				var ctx = $("#"+res.name).get(0).getContext("2d");
+				var myLineChart = new Chart(ctx).Line(data, {"animation": false});
+				
+				funcc[res.name] = function(){
+					var ll = res.len/res.data.length;
+					var ii=0;
+					window.setInterval(function(){
+						myLineChart.datasets[1].points[ii].value = res.data[ii];
+						myLineChart.update();
+						ii += 1;
+					}, ll)
+				}
+		    })        	
+        }
+    })
 });
 
