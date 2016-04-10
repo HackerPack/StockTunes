@@ -8,14 +8,14 @@ function toggle(el){
         el.src='img/pause.jpg';
         el.className="pause";
         player.play();
-        funcc[player.className]();
+        funcc[player.className].start();
     }
     else if(el.className=="pause")
     {
         el.src='img/play.png';
         el.className="play";
         player.pause();
-        
+        funcc[player.className].stop();
     }
     return false;
 }
@@ -84,14 +84,18 @@ $(function() {
 				var ctx = $("#"+res.name).get(0).getContext("2d");
 				var myLineChart = new Chart(ctx).Line(data, {"animation": false});
 				
-				funcc[res.name] = function(){
+				funcc[res.name] = {};
+				funcc[res.name].counter = 0;
+				funcc[res.name].start = function(){
 					var ll = res.len/res.data.length;
-					var ii=0;
-					window.setInterval(function(){
-						myLineChart.datasets[1].points[ii].value = res.data[ii];
+					funcc[res.name].id = window.setInterval(function(){
+						myLineChart.datasets[1].points[funcc[res.name].counter].value = res.data[funcc[res.name].counter];
 						myLineChart.update();
-						ii += 1;
+						funcc[res.name].counter = funcc[res.name].counter + 1;
 					}, ll)
+				}
+				funcc[res.name].stop = function(){
+					window.clearInterval(funcc[res.name].id);
 				}
 		    })        	
         }
