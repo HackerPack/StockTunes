@@ -51,15 +51,14 @@ def gen_midi(filename, note_list):
     midi.seq_notes(note_list)
     midi.write(filename)
 
-FILENAME = "yhoo"
 SF2 = "soundfont/FarfisaGrandPiano_S1.sf2"
 OUTPUT = "output"
 INTER = "intermediate"
 
-
-def generate():
+def generate(FILENAME, gg=None):
     octave = range(5, 7)
-    gg = read_file()
+    if not gg:
+    	gg = read_file()
     gg = change_range(gg, min(gg), max(gg), 0, 11)
     n1 = play_list(gg, octave, 1/8)
     midi_path = "midi/"+FILENAME+".mid"
@@ -73,4 +72,4 @@ def generate():
     
 
 if __name__ == "__main__":
-    generate()
+    generate("yhoo")
