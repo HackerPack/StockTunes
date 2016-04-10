@@ -11,7 +11,11 @@ from pydub import AudioSegment
 
 def read_file():
 	data = open("sample.dat", "r").read()
-	data = [int(float(x)) for x in data.split()]
+	return convert_to_num(data.split())
+
+
+def convert_to_num(lis):
+	data = [int(float(x)) for x in lis]
 	return data
 
 def choice_if_list(item):
@@ -59,6 +63,8 @@ def generate(FILENAME, gg=None):
     octave = range(5, 7)
     if not gg:
     	gg = read_file()
+    else:
+    	gg = convert_to_num(gg)
     gg = change_range(gg, min(gg), max(gg), 0, 11)
     n1 = play_list(gg, octave, 1/8)
     midi_path = "midi/"+FILENAME+".mid"
